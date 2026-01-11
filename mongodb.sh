@@ -41,3 +41,5 @@ VALOIDATE $? "enable mongodb"
 systemctl start mongodb
 VALIDATE $? "starting mongodb"
 
+systemctl restart mongod
+VALIDATE $? "RESTART MONGODB"
