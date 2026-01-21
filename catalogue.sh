@@ -34,7 +34,7 @@ VALIDATE() {
     fi
 }
 
-dnf module disbale nodejs -y
+dnf module disable nodejs -y
 VALIDATE $? "Disbaling node:js"
 
 dnf module enable nodejs:20 -y   
