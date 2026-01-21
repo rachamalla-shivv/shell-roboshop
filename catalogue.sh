@@ -34,13 +34,13 @@ VALIDATE() {
     fi
 }
 
-dnf module disable nodejs -y
+dnf module disable nodejs -y &>>$LOGS_FILE
 VALIDATE $? "Disbaling node:js"
 
-dnf module enable nodejs:20 -y   
+dnf module enable nodejs:20 -y  &>>$LOGS_FILE
 VALIDATE $? "enable nodejs:20"
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$LOGS_FILE
 VALIDATE $? "installing nodejs"
 
 id roboshop &>>$LOGS_FILE
