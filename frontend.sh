@@ -16,6 +16,7 @@ N="\e[0m"
 
 
 LOG_FOLDER="/var/log/shell-roboshop"
+SCRIPT_DIR=$PWD
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 LOGS_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
 
@@ -29,27 +30,27 @@ VALIDATE() {
     fi
 }
 
-dnf module disable nginx -y
-dnf module enable nginx:1.24 -y
-dnf install nginx -y
+dnf module disable nginx -y &>>$LOG_FILE
+dnf module enable nginx:1.24 -y &>>$LOG_FILE
+dnf install nginx -y &>>$LOG_FILE
 
 VALIDATE $? " installing nginx "
 
-systemctl enable nginx 
-systemctl start nginx 
+systemctl enable nginx &>>$LOG_FILE
+systemctl start nginx  &>>$LOG_FILE
 VALIDATE $? "enabling systemctl"
 
-rm -rf /usr/share/nginx/html/* 
+rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
 VALIDATE $? " removing user content"
 
 curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
-cd /usr/share/nginx/html 
-unzip /tmp/frontend.zip
+cd /usr/share/nginx/html &>>$LOG_FILE
+unzip /tmp/frontend.zip &>>$LOG_FILE
 VALIDATE $? " downloading and unzip the code"
 
-
-cp nginx.conf /etc/nginx/nginx.conf
+rm -rf /etc/nginx/nginx.conf
+cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
 VALIDATE $? "nginx config"
-
-systemctl restart nginx 
+ 
+systemctl restart nginx &>>$LOG_FILE
 VALIDATE $? "restart nginx"
