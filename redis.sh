@@ -1,5 +1,7 @@
 #!/bin/bash
  
+#!/bin/bash
+ 
  
 USERID=$( id -u )
 
@@ -16,8 +18,19 @@ N="\e[0m"
 
 
 LOG_FOLDER="/var/log/shell-roboshop"
+SCRIPT_DIR=$PWD
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOG_FOLDER/$SCRIPT_NAME.log"
+
+mkdir -p $LOG_FOLDER
+
+VALIDATE() {
+    if [ $1 -ne 0 ]; then
+        echo -e " $2 is..$R FAILURE $N"
+    else
+        echo -e " $2 is ..$G SUCCESS $N"
+    fi
+}
 
 dnf module disable redis -y &>>$LOG_FILE
 dnf module enable redis:7 -y &>>$LOG_FILE
