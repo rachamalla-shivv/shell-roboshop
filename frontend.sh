@@ -37,13 +37,13 @@ dnf install nginx -y     &>>$LOG_FILE
 VALIDATE $? " installing nginx "
 
 systemctl enable nginx &>>$LOG_FILE
-systemctl start nginx  &>>$LOG_FILE
+
 VALIDATE $? "enabling systemctl"
 
 rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
 VALIDATE $? " removing user content"
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip  &>>$LOG_FIL
 cd /usr/share/nginx/html &>>$LOG_FILE
 unzip /tmp/frontend.zip &>>$LOG_FILE
 VALIDATE $? " downloading and unzip the code"
@@ -52,5 +52,7 @@ rm -rf /etc/nginx/nginx.conf
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
 VALIDATE $? "nginx config"
  
-systemctl restart nginx &>>$LOG_FILE
+systemctl start nginx &>>$LOG_FILE
 VALIDATE $? "restart nginx"
+
+systemctl status nginx
