@@ -45,6 +45,7 @@ VALIDATE $? " removing user content"
 
 curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip  &>>$LOG_FIL
 cd /usr/share/nginx/html &>>$LOG_FILE
+rm -rf /app/*
 unzip /tmp/frontend.zip &>>$LOG_FILE
 VALIDATE $? " downloading and unzip the code"
 
